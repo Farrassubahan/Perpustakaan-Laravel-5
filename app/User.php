@@ -2,8 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use App\Loan;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
@@ -14,11 +16,13 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    use LaratrustUserTrait;
+
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'role'
+        'password'
     ];
 
     /**
@@ -30,7 +34,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
     public function loans()
     {
         return $this->hasMany(Loan::class);

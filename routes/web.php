@@ -20,25 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/insert-joko', function () {
-
-    Joko::create([
-        'name' => 'Joko Widodo',
-        'asal_kota' => 'Surakarta',
-        'asal_kabupaten' => 'Sragen'
-    ]);
-
-    return Joko::all();
-});
-
-Route::get('/testmodel', function () {
-    // $query = /* isi sample query */ ;
-    $query = DB::table('jokos')
-        ->select('id', 'name', 'asal_kota', 'asal_kabupaten')
-        ->get();
-    return $query;
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
