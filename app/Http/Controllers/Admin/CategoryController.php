@@ -37,7 +37,6 @@ class CategoryController extends Controller
                     <button class="btn btn-sm btn-danger delete" data-id="' . $row->id . '">Hapus</button>
                 ';
             })
-            // Hapus baris make(true) jika Anda ingin debug manual
             ->make(true);
     }
 

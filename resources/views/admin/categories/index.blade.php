@@ -3,8 +3,6 @@
 
 
 @section('content')
-
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -61,7 +59,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     <script>
         $(function() {

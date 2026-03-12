@@ -68,8 +68,8 @@
 
                             {{-- MENU USER --}}
                             @role('user')
-                                <li class="{{ Request::is('/') ? 'active' : '' }}">
-                                    <a href="{{ url('/') }}">
+                                <li class="{{ Request::is('user.home') ? 'active' : '' }}">
+                                    <a href="{{ route('user.home') }}">
                                         <i class="fa fa-home"></i> Beranda
                                     </a>
                                 </li>
