@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+
+        if (!$user || !$user->hasRole('user ')) {
+
+            auth()->logout();
+
+            return redirect()->route('login');
+        }
+
         return view('home');
     }
 }

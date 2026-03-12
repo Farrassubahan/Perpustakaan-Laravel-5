@@ -18,7 +18,25 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+
+            $user = Auth::user();
+
+            // mapping role ke halaman
+            $redirectMap = [
+                'admin' => '/admin/dashboard',
+                'user' => '/user/home',
+                'librarian' => '/librarian/dashboard',
+                'editor' => '/editor/dashboard',
+            ];
+
+            foreach ($user->roles as $role) {
+                if (isset($redirectMap[$role->name])) {
+                    return redirect($redirectMap[$role->name]);
+                }
+            }
+
+            // fallback jika role tidak ada di mapping
+            return redirect('/');
         }
 
         return $next($request);

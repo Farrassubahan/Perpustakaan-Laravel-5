@@ -21,14 +21,14 @@ class UsersSeeder extends Seeder
         // Membuat sample admin
         $admin = new User();
         $admin->name = 'Admin Larapus';
-        $admin->email = 'admin@gmail.com';
+        $admin->email = 'admin@admin.com';
         $admin->password = bcrypt('12345678');
         $admin->save();
         $admin->attachRole($adminRole);
         // Membuat sample member
         $member = new User();
         $member->name = "Sample Member";
-        $member->email = 'member@gmail.com';
+        $member->email = 'user@user.com';
         $member->password = bcrypt('12345678');
         $member->save();
         $member->attachRole($memberRole);

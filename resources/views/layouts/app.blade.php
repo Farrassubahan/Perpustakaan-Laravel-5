@@ -4,159 +4,144 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- Mobile Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'L Farpus') }}</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
-    <!-- Custom Style -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
+    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
 
+    <!-- Bootstrap Core -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <!-- Custom Modern Style -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}">
+
+    @yield('styles')
 </head>
 
 <body>
 
     <div id="app">
 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
-
-                <!-- Brand and toggle -->
                 <div class="navbar-header">
-
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#main-navbar">
-
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-
                     </button>
-
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                        {{ config('app.name', 'L Farpus') }}
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <i class="fa fa-book"></i> {{ config('app.name', 'L Farpus') }}
                     </a>
-
                 </div>
 
-                <!-- Navbar Menu -->
                 <div class="collapse navbar-collapse" id="main-navbar">
-
-                    <!-- LEFT MENU -->
                     <ul class="nav navbar-nav">
 
-                        <li class="active">
-                            <a href="{{ url('/') }}">
-                                <span class="glyphicon glyphicon-home fa fa-home"></span>
-                                Beranda
-                            </a>
-                        </li>
+                        @if (!Auth::guest())
+                            {{-- MENU ADMIN --}}
+                            @role('admin')
+                                <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.dashboard') }}">
+                                        <i class="fa fa-dashboard"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('admin/books*') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.books.index') }}">
+                                        <i class="fa fa-book"></i> Kelola Buku
+                                    </a>
+                                </li>
+                            @endrole
 
-                        <li>
-                            <a href="#">
-                                <span class="glyphicon glyphicon-book fa fa-book"></span>
-                                Buku
-                            </a>
-                        </li>
+
+                            {{-- MENU USER --}}
+                            @role('user')
+                                <li class="{{ Request::is('/') ? 'active' : '' }}">
+                                    <a href="{{ url('/') }}">
+                                        <i class="fa fa-home"></i> Beranda
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-book"></i> Buku
+                                    </a>
+                                </li>
+                            @endrole
+                        @endif
 
                     </ul>
-
-
-                    <!-- RIGHT MENU -->
                     <ul class="nav navbar-nav navbar-right">
-
                         @if (Auth::guest())
-                            <li>
+                            <li class="{{ Request::is('login') ? 'active' : '' }}">
                                 <a href="{{ url('/login') }}">
-                                    <span class="glyphicon glyphicon-log-in"></span>
-                                    Login
+                                    <i class="fa fa-sign-in"></i> Login
                                 </a>
                             </li>
-
-                            <li>
+                            <li class="{{ Request::is('register') ? 'active' : '' }}">
                                 <a href="{{ url('/register') }}">
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    Daftar
+                                    <i class="fa fa-user-plus"></i> Daftar
                                 </a>
                             </li>
                         @else
                             <li class="dropdown">
-
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    {{ Auth::user()->name }}
-                                    <span class="caret"></span>
-
+                                    <i class="fa fa-user-circle"></i> {{ Auth::user()->name }} <span
+                                        class="caret"></span>
                                 </a>
-
                                 <ul class="dropdown-menu">
-
                                     <li>
                                         <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                   document.getElementById('logout-form').submit();">
-
-                                            <span class="glyphicon glyphicon-log-out"></span>
-                                            Logout
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out"></i> Logout
                                         </a>
-
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST"
                                             style="display:none">
-
                                             {{ csrf_field() }}
-
                                         </form>
-
                                     </li>
-
                                 </ul>
-
                             </li>
                         @endif
-
                     </ul>
 
-                </div>
 
+                </div>
             </div>
         </nav>
 
         <!-- CONTENT -->
-        <div class="container" style="margin-top:80px">
-
+        <div class="container" style="margin-top:100px; min-height: 80vh;">
             @yield('content')
-
         </div>
 
-        <footer class="navbar navbar-inverse navbar-static-bottom">
+        <footer class="footer">
             <div class="container text-center">
-                <p class="navbar-text">
-                    © {{ date('Y') }} {{ config('app.name', 'L Farpus') }} — Sistem Perpustakaan
+                <hr>
+                <p class="text-muted">
+                    &copy; {{ date('Y') }} {{ config('app.name', 'L Farpus') }} &mdash; Sistem Manajemen
+                    Perpustakaan
                 </p>
+                <p class="small text-muted">Aplikasi Perpustakaan Modern dan Profesional</p>
             </div>
         </footer>
 
-
     </div>
 
-
-    <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">\
+    <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/datatables.js') }}"></script>
+    {{-- <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script> --}}
+
+    @yield('scripts')
 
 </body>
 

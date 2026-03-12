@@ -22,4 +22,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+
+require __DIR__.'/user.php';
+require __DIR__.'/admin.php';
+
