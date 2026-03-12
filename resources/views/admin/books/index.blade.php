@@ -86,42 +86,15 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.books.datatable') }}",
-                columns: [{
-                        data: 'DT_Row_Index',
-                        name: 'DT_Row_Index',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'title',
-                        name: 'books.title'
-                    },
-                    {
-                        data: 'author',
-                        name: 'books.author'
-                    },
-                    {
-                        data: 'category',
-                        name: 'categories.name'
-                    },
-                    {
-                        data: 'publisher',
-                        name: 'books.publisher'
-                    },
-                    {
-                        data: 'release_year',
-                        name: 'books.release_year'
-                    },
-                    {
-                        data: 'stock',
-                        name: 'books.stock'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
+                columns: [
+                    { data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false },
+                    { data: 'title', name: 'books.title' },
+                    { data: 'author', name: 'books.author' },
+                    { data: 'category', name: 'categories.name' },
+                    { data: 'publisher', name: 'books.publisher' },
+                    { data: 'release_year', name: 'books.release_year' },
+                    { data: 'stock', name: 'books.stock' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
 

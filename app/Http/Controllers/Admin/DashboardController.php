@@ -38,9 +38,8 @@ class DashboardController extends Controller
     /**
      * datatable source
      */
-    public function datatable(Request $request)
+    public function datatable()
     {
-        // Cukup buat query dasarnya saja, jangan di ->get() dulu
         $query = DB::table('books')
             ->join('categories', 'categories.id', '=', 'books.category_id')
             ->select([
@@ -54,7 +53,7 @@ class DashboardController extends Controller
             ]);
 
         return Datatables::of($query)
-            ->addIndexColumn() // Otomatis membuat kolom 'DT_Row_Index' untuk nomor urut
+            ->addIndexColumn()
             ->make(true);
-    }
+    }   
 }

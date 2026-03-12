@@ -2,7 +2,7 @@
 
 Route::group([
     'prefix' => 'user',
-    'middleware' => 'auth'
+    'middleware' => ['auth','role:user']
 ], function () {
 
     Route::get('/home', [

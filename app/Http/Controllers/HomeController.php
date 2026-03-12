@@ -23,14 +23,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        // $user = auth()->user();
 
-        if (!$user || !$user->hasRole('user ')) {
+        // if (!$user || !$user->hasRole('user ')) {
 
-            auth()->logout();
+        //     auth()->logout();
 
-            return redirect()->route('login');
-        }
+        //     return redirect()->route('login');
+        // }
 
         return view('home');
     }

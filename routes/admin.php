@@ -2,7 +2,7 @@
 
 Route::group([
     'prefix' => 'admin',
-    'middleware' => ['auth']
+    'middleware' => ['auth', 'role:admin']
 ], function () {
 
     // DASHBOARD
@@ -32,7 +32,6 @@ Route::group([
         'uses' => 'Admin\BukuController@store'
     ]);
 
-    // Pastikan urutan show (ID) berada di bawah agar tidak bentrok dengan rute statis
     Route::get('books/{id}', [
         'as'   => 'admin.books.show',
         'uses' => 'Admin\BukuController@show'
@@ -47,4 +46,17 @@ Route::group([
         'as'   => 'admin.books.delete',
         'uses' => 'Admin\BukuController@destroy'
     ]);
+
+    // Tambahkan ini di dalam group admin
+    Route::get('categories', ['as' => 'admin.categories.index', 'uses' => 'Admin\CategoryController@index']);
+
+    Route::get('categories/data', ['as' => 'admin.categories.datatable', 'uses' => 'Admin\CategoryController@datatable']);
+
+    Route::post('categories/store', ['as' => 'admin.categories.store', 'uses' => 'Admin\CategoryController@store']);
+
+    Route::get('categories/{id}', ['as' => 'admin.categories.show', 'uses' => 'Admin\CategoryController@show']);
+
+    Route::post('categories/update/{id}', ['as' => 'admin.categories.update', 'uses' => 'Admin\CategoryController@update']);
+    
+    Route::delete('categories/delete/{id}', ['as' => 'admin.categories.delete', 'uses' => 'Admin\CategoryController@destroy']);
 });

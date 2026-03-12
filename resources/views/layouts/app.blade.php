@@ -58,6 +58,11 @@
                                         <i class="fa fa-book"></i> Kelola Buku
                                     </a>
                                 </li>
+                                <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.categories.index') }}">
+                                        <i class="fa fa-tags"></i> Kelola Buku
+                                    </a>
+                                </li>
                             @endrole
 
 
