@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// PERBAIKAN: Gunakan 't' kecil pada Datatables agar Class ditemukan
 use Yajra\Datatables\Facades\Datatables;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -64,5 +65,78 @@ class HomeController extends Controller
             ->first();
 
         return response()->json($book);
+    }
+
+    public function storeLoan(Request $request)
+    {
+        // validasi input
+        $this->validate($request, [
+            'book_id' => 'required|integer',
+            'qty'     => 'required|integer|min:1'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            // cek buku
+            $book = DB::table('books')
+                ->where('id', $request->book_id)
+                ->first();
+
+            if (!$book) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Buku tidak ditemukan'
+                ], 404);
+            }
+
+            // cek stok
+            if ($book->stock < $request->qty) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stok buku tidak mencukupi'
+                ], 400);
+            }
+
+            // insert ke tabel loans
+            $loanId = DB::table('loans')->insertGetId([
+                'user_id'    => Auth::id(),
+                'loan_date'  => date('Y-m-d'),
+                'status'     => 'borrowed',
+                'return_date' => $request->return_date,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+            // insert loan detail
+            DB::table('loan_details')->insert([
+                'loan_id'    => $loanId,
+                'book_id'    => $request->book_id,
+                'qty'        => $request->qty,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+            // kurangi stok buku
+            DB::table('books')
+                ->where('id', $request->book_id)
+                ->decrement('stock', $request->qty);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Peminjaman berhasil diajukan'
+            ]);
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses peminjaman'
+            ], 500);
+        }
     }
 }

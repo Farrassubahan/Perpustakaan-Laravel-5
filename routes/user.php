@@ -19,4 +19,9 @@ Route::group([
         'as' => 'user.books.detail',
         'uses' => 'HomeController@detail'
     ]);
+
+    Route::post('/home/loans/store', [
+        'as' => 'user.loans.store',
+        'uses' => 'HomeController@storeLoan'
+    ]);
 });

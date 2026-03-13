@@ -42,68 +42,8 @@
     </div>
 
 
-    <!-- MODAL DETAIL -->
-    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <button type="button" class="close" data-dismiss="modal">
-                        &times;
-                    </button>
-
-                    <h4 class="modal-title">Detail Buku</h4>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <table class="table table-bordered">
-
-                        <tr>
-                            <th width="150">Kategori</th>
-                            <td id="detail_category"></td>
-                        </tr>
-
-                        <tr>
-                            <th>Judul</th>
-                            <td id="detail_title"></td>
-                        </tr>
-
-                        <tr>
-                            <th>Author</th>
-                            <td id="detail_author"></td>
-                        </tr>
-
-                        <tr>
-                            <th>Publisher</th>
-                            <td id="detail_publisher"></td>
-                        </tr>
-
-                        <tr>
-                            <th>Tahun</th>
-                            <td id="detail_year"></td>
-                        </tr>
-
-                        <tr>
-                            <th>Stock</th>
-                            <td id="detail_stock"></td>
-                        </tr>
-
-                    </table>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-default" data-dismiss="modal">
-                        Tutup
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @include('modals.book-detail')
+    @include('modals.loan-form')
 @endsection
 
 
@@ -173,12 +113,88 @@
                         $('#detail_year').text(data.release_year);
                         $('#detail_stock').text(data.stock);
 
+                        $('#loan_book_id').val(data.id);
+                        $('#loan_book_title').val(data.title);
+
                         $('#modalDetail').modal('show');
 
                     },
 
                     error: function(xhr) {
                         console.log(xhr.responseText);
+                    }
+
+                });
+
+            });
+
+
+            // modal pinjaman buku
+            $('#btnOpenLoanModal').click(function() {
+
+                $('#modalDetail').modal('hide');
+
+                let today = new Date();
+                today.setDate(today.getDate() + 7);
+
+                $('#return_date').val(
+                    today.toISOString().split('T')[0]
+                );
+
+
+                setTimeout(function() {
+                    $('#modalLoan').modal('show');
+                }, 300);
+
+            });
+
+            // submit peminjaman buku
+            $('#btnSubmitLoan').click(function() {
+
+                var book_id = $('#loan_book_id').val();
+                var qty = $('#loan_qty').val();
+                var return_date = $('#return_date').val();
+
+                $.ajax({
+
+                    url: "{{ url('user/home/loans/store') }}",
+                    type: "POST",
+
+                    data: {
+                        book_id: book_id,
+                        qty: qty,
+                        return_date: return_date,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                    success: function(res) {
+
+                        $('#modalLoan').modal('hide');
+
+                        // reload datatable jika perlu
+                        $('#books-table').DataTable().ajax.reload(null, false);
+
+                        // SWEET ALERT SUCCESS
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Peminjaman buku berhasil diajukan',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+
+                    },
+
+                    error: function(xhr) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Waduh...',
+                            text: 'Terjadi kesalahan saat memproses peminjaman.'
+                        });
+
+                        console.log(xhr.responseText);
+
                     }
 
                 });

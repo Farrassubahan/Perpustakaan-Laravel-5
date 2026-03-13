@@ -78,7 +78,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
     <script>
         $(function() {
             // 1. Inisialisasi DataTable
@@ -143,7 +143,7 @@
                             title: 'Waduh...',
                             text: 'Terjadi kesalahan sistem saat menyimpan data.',
                         });
-                    }
+                    } 
                 });
             });
 
