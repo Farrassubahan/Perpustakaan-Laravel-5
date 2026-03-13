@@ -19,9 +19,12 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     @yield('styles')
 </head>
+{{-- {!! NoCaptcha::renderJs() !!} --}}
+
 
 <body>
 
@@ -38,7 +41,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        <i class="fa fa-book-reader"></i> {{ config('app.name', 'L Farpus') }}
+                        <i class="fa fa-book"></i> {{ config('app.name', 'L Farpus') }}
                     </a>
                 </div>
 
@@ -48,17 +51,17 @@
                         @if (!Auth::guest())
                             {{-- MENU ADMIN --}}
                             @role('admin')
-                                <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                                <li class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
                                     <a href="{{ route('admin.dashboard') }}">
                                         <i class="fa fa-th-large"></i> Dashboard
                                     </a>
                                 </li>
-                                <li class="{{ Request::is('admin/books*') ? 'active' : '' }}">
+                                <li class="{{ Route::is('admin.books.*') ? 'active' : '' }}">
                                     <a href="{{ route('admin.books.index') }}">
                                         <i class="fa fa-book"></i> Kelola Buku
                                     </a>
                                 </li>
-                                <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
+                                <li class="{{ Route::is('admin.categories.*') ? 'active' : '' }}">
                                     <a href="{{ route('admin.categories.index') }}">
                                         <i class="fa fa-tags"></i> Kategori
                                     </a>
@@ -68,13 +71,13 @@
 
                             {{-- MENU USER --}}
                             @role('user')
-                                <li class="{{ Request::is('user/home*') ? 'active' : '' }}">
+                                <li class="{{ Route::is('user.home') ? 'active' : '' }}">
                                     <a href="{{ route('user.home') }}">
                                         <i class="fa fa-home"></i> Beranda
                                     </a>
                                 </li>
 
-                                <li class="{{ Request::is('user/books/my-loans*') ? 'active' : '' }}">
+                                <li class="{{ Route::is('user.books.myloans*') ? 'active' : '' }}">
                                     <a href="{{ route('user.books.myloans') }}">
                                         <i class="fa fa-bookmark"></i> Pinjaman Saya
                                     </a>
@@ -89,12 +92,13 @@
                                 <a href="{{ url('/login') }}">Login</a>
                             </li>
                             <li class="{{ Request::is('register') ? 'active' : '' }}">
-                                <a href="{{ url('/register') }}" class="btn btn-primary navbar-btn" style="margin-left: 15px; color: white !important;">Daftar</a>
+                                <a href="{{ url('/register') }}" class="btn btnnavbar-btn">Daftar</a>
                             </li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random&color=fff&size=32" class="img-circle" style="width:24px; margin-top:-5px; margin-right:5px;"> 
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random&color=fff&size=32"
+                                        class="img-circle" style="width:24px; margin-top:-5px; margin-right:5px;">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
@@ -119,7 +123,7 @@
         </nav>
 
         <!-- CONTENT -->
-        <div class="container pt-5" style="margin-top:80px; min-height: 80vh;">
+        <div class="container pt-5" style="min-height: 80vh;">
             @yield('content')
         </div>
 
@@ -127,7 +131,8 @@
             <div class="container text-center">
                 <hr style="border-top: 1px solid var(--border-color);">
                 <p class="text-muted">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'L Farpus') }} &bull; Sistem Manajemen Perpustakaan
+                    &copy; {{ date('Y') }} {{ config('app.name', 'L Farpus') }} &bull; Sistem Manajemen
+                    Perpustakaan
                 </p>
                 <p class="small text-muted">Modernizing the way you manage and discover books.</p>
             </div>

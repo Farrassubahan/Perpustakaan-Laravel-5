@@ -74,6 +74,10 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            {!! NoCaptcha::display() !!}
+                        </div>
+
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-md-10 col-md-offset-1">
                                 <button type="submit" class="btn btn-primary btn-block">

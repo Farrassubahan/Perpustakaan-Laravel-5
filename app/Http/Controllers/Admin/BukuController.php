@@ -71,6 +71,22 @@ class BukuController extends Controller
 
     public function update(Request $request, $id)
     {
+        // hitung jumlah buku yang sedang dipinjam
+        $borrowed = DB::table('loan_details')
+            ->join('loans', 'loans.id', '=', 'loan_details.loan_id')
+            ->where('loan_details.book_id', $id)
+            ->where('loans.status', 'borrowed')
+            ->sum('qty');
+
+        // validasi jika stock lebih kecil dari buku yang dipinjam
+        if ($request->stock < $borrowed) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Stok tidak boleh lebih kecil dari jumlah buku yang sedang dipinjam (' . $borrowed . ')'
+            ], 400);
+        }
+
         DB::table('books')
             ->where('id', $id)
             ->update([
@@ -83,12 +99,42 @@ class BukuController extends Controller
                 'updated_at'   => Carbon::now()
             ]);
 
-        return response()->json(['status' => true, 'message' => 'Buku diperbarui']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Buku berhasil diperbarui'
+        ]);
     }
 
     public function destroy($id)
     {
-        DB::table('books')->where('id', $id)->delete();
-        return response()->json(['status' => true, 'message' => 'Buku dihapus']);
+        try {
+
+            $borrowed = DB::table('loan_details')
+                ->join('loans', 'loans.id', '=', 'loan_details.loan_id')
+                ->where('loan_details.book_id', $id)
+                ->where('loans.status', 'borrowed')
+                ->count();
+
+            if ($borrowed > 0) {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Buku tidak bisa dihapus karena masih sedang dipinjam.'
+                ]);
+            }
+
+            DB::table('books')->where('id', $id)->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data buku berhasil dihapus.'
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

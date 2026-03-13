@@ -78,7 +78,6 @@
 @endsection
 
 @section('scripts')
-  
     <script>
         $(function() {
             // 1. Inisialisasi DataTable
@@ -86,15 +85,42 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.books.datatable') }}",
-                columns: [
-                    { data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false },
-                    { data: 'title', name: 'books.title' },
-                    { data: 'author', name: 'books.author' },
-                    { data: 'category', name: 'categories.name' },
-                    { data: 'publisher', name: 'books.publisher' },
-                    { data: 'release_year', name: 'books.release_year' },
-                    { data: 'stock', name: 'books.stock' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                columns: [{
+                        data: 'DT_Row_Index',
+                        name: 'DT_Row_Index',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'title',
+                        name: 'books.title'
+                    },
+                    {
+                        data: 'author',
+                        name: 'books.author'
+                    },
+                    {
+                        data: 'category',
+                        name: 'categories.name'
+                    },
+                    {
+                        data: 'publisher',
+                        name: 'books.publisher'
+                    },
+                    {
+                        data: 'release_year',
+                        name: 'books.release_year'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'books.stock'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
 
@@ -143,7 +169,19 @@
                             title: 'Waduh...',
                             text: 'Terjadi kesalahan sistem saat menyimpan data.',
                         });
-                    } 
+                    },
+
+                    error: function(xhr) {
+
+                        let res = xhr.responseJSON;
+
+                        Swal.fire(
+                            'Tidak Bisa Mengubah!',
+                            res.message,
+                            'warning'
+                        );
+
+                    }
                 });
             });
 
@@ -163,8 +201,9 @@
                 });
             });
 
-            // 5. Tombol Delete (Konfirmasi SweetAlert)
+            // tombol delete buku
             $('body').on('click', '.delete', function() {
+
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -177,28 +216,65 @@
                     confirmButtonText: 'Ya, Hapus!',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
+
                     if (result.isConfirmed) {
+
                         $.ajax({
+
                             url: "{{ url('admin/books/delete') }}/" + id,
                             type: "DELETE",
+                            dataType: "json",
+
                             data: {
                                 _token: "{{ csrf_token() }}"
                             },
+
                             success: function(res) {
+
+                                // jika tidak boleh dihapus
+                                if (!res.status) {
+
+                                    Swal.fire(
+                                        'Tidak Bisa Menghapus!',
+                                        res.message,
+                                        'warning'
+                                    );
+
+                                    return;
+                                }
+
+                                // reload datatable
                                 table.ajax.reload();
+
                                 Swal.fire(
                                     'Terhapus!',
                                     res.message,
                                     'success'
                                 );
+
                             },
-                            error: function() {
-                                Swal.fire('Error', 'Gagal menghapus data.', 'error');
+
+                            error: function(xhr) {
+
+                                console.log(xhr.responseText);
+
+                                Swal.fire(
+                                    'Error',
+                                    'Terjadi kesalahan sistem.',
+                                    'error'
+                                );
+
                             }
+
                         });
+
                     }
+
                 });
+
             });
+
+
         }); // Penutup function utama
     </script>
 @endsection

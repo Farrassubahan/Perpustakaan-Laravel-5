@@ -39,7 +39,14 @@ body {
     font-weight: 600;
     font-size: 0.95rem;
     transition: all 0.2s ease;
-    padding: 20px 15px;
+    padding: 15px 15px;
+}
+
+.navbar-default .navbar-nav > li > a.btn {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 10px;
+    padding: 6px 16px;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
@@ -113,6 +120,10 @@ body {
 
 .p-4 { padding: 24px !important; }
 .pt-5 { padding-top: 48px !important; }
+
+.navbar-fixed-top + .container {
+    margin-top: 70px !important;
+}
 
 /* Hero Section */
 .hero-card {
