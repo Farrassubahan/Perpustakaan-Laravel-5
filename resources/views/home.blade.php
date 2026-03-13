@@ -1,24 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-                <div class="panel panel-default">
+            <div class="hero-card shadow-sm mb-5">
+                <h2>Selamat Datang, {{ Auth::user()->name }}!</h2>
+                <p>Temukan dan pinjam koleksi buku terbaik kami secara online dengan mudah.</p>
+            </div>
 
-                    <div class="panel-heading">
-                        Dashboard
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-list-alt"></i> Daftar Koleksi Buku
+                </div>
 
-                    <div class="panel-body">
-
-                        <div class="mb-3">
-                            <h4>Selamat Datang, {{ Auth::user()->name }}!</h4>
-                            <p>Ini adalah halaman dashboard untuk pengguna biasa.</p>
-                        </div>
-
-                        <table class="table table-bordered" id="books-table" width="100%">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="books-table" width="100%">
                             <thead>
                                 <tr>
                                     <th width="50">ID</th>
@@ -28,16 +26,14 @@
                                     <th>Publisher</th>
                                     <th>Tahun</th>
                                     <th>Stock</th>
-                                    <th width="120">Action</th>
+                                    <th width="100">Action</th>
                                 </tr>
                             </thead>
                         </table>
-
                     </div>
-
                 </div>
-
             </div>
+
         </div>
     </div>
 

@@ -24,4 +24,20 @@ Route::group([
         'as' => 'user.loans.store',
         'uses' => 'HomeController@storeLoan'
     ]);
+
+    // halaman buku yang dipinjam oleh user
+    Route::get('/books/my-loans', [
+        'as' => 'user.books.myloans',
+        'uses' => 'BookController@myLoans'
+    ]);
+
+    Route::get('/books/my-loans/datatable', [
+        'as' => 'user.books.myloans.datatable',
+        'uses' => 'BookController@datatableMyLoans'
+    ]);
+
+    Route::post('/books/return/{id}', [
+        'as' => 'user.books.return',
+        'uses' => 'BookController@returnBook'
+    ]);
 });

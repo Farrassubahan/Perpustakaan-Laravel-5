@@ -38,7 +38,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        <i class="fa fa-book"></i> {{ config('app.name', 'L Farpus') }}
+                        <i class="fa fa-book-reader"></i> {{ config('app.name', 'L Farpus') }}
                     </a>
                 </div>
 
@@ -50,7 +50,7 @@
                             @role('admin')
                                 <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
                                     <a href="{{ route('admin.dashboard') }}">
-                                        <i class="fa fa-dashboard"></i> Dashboard
+                                        <i class="fa fa-th-large"></i> Dashboard
                                     </a>
                                 </li>
                                 <li class="{{ Request::is('admin/books*') ? 'active' : '' }}">
@@ -60,7 +60,7 @@
                                 </li>
                                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                                     <a href="{{ route('admin.categories.index') }}">
-                                        <i class="fa fa-tags"></i> Kelola Buku
+                                        <i class="fa fa-tags"></i> Kategori
                                     </a>
                                 </li>
                             @endrole
@@ -68,15 +68,15 @@
 
                             {{-- MENU USER --}}
                             @role('user')
-                                <li class="{{ Request::is('user.home') ? 'active' : '' }}">
+                                <li class="{{ Request::is('user/home*') ? 'active' : '' }}">
                                     <a href="{{ route('user.home') }}">
                                         <i class="fa fa-home"></i> Beranda
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-book"></i> Buku
+                                <li class="{{ Request::is('user/books/my-loans*') ? 'active' : '' }}">
+                                    <a href="{{ route('user.books.myloans') }}">
+                                        <i class="fa fa-bookmark"></i> Pinjaman Saya
                                     </a>
                                 </li>
                             @endrole
@@ -86,20 +86,16 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::guest())
                             <li class="{{ Request::is('login') ? 'active' : '' }}">
-                                <a href="{{ url('/login') }}">
-                                    <i class="fa fa-sign-in"></i> Login
-                                </a>
+                                <a href="{{ url('/login') }}">Login</a>
                             </li>
                             <li class="{{ Request::is('register') ? 'active' : '' }}">
-                                <a href="{{ url('/register') }}">
-                                    <i class="fa fa-user-plus"></i> Daftar
-                                </a>
+                                <a href="{{ url('/register') }}" class="btn btn-primary navbar-btn" style="margin-left: 15px; color: white !important;">Daftar</a>
                             </li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-user-circle"></i> {{ Auth::user()->name }} <span
-                                        class="caret"></span>
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random&color=fff&size=32" class="img-circle" style="width:24px; margin-top:-5px; margin-right:5px;"> 
+                                    {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -123,18 +119,17 @@
         </nav>
 
         <!-- CONTENT -->
-        <div class="container" style="margin-top:100px; min-height: 80vh;">
+        <div class="container pt-5" style="margin-top:80px; min-height: 80vh;">
             @yield('content')
         </div>
 
-        <footer class="footer">
+        <footer class="mt-5 mb-5">
             <div class="container text-center">
-                <hr>
+                <hr style="border-top: 1px solid var(--border-color);">
                 <p class="text-muted">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'L Farpus') }} &mdash; Sistem Manajemen
-                    Perpustakaan
+                    &copy; {{ date('Y') }} {{ config('app.name', 'L Farpus') }} &bull; Sistem Manajemen Perpustakaan
                 </p>
-                <p class="small text-muted">Aplikasi Perpustakaan Modern dan Profesional</p>
+                <p class="small text-muted">Modernizing the way you manage and discover books.</p>
             </div>
         </footer>
 
