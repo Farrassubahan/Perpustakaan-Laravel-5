@@ -17,7 +17,12 @@ class BookController extends Controller
      */
     public function myLoans()
     {
-        return view('books.my-loans');
+
+        $borrowedBooks = DB::table('loans')
+            ->where('status', 'borrowed')
+            ->count();
+
+        return view('books.my-loans', compact('borrowedBooks'));
     }
 
 

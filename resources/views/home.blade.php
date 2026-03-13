@@ -9,6 +9,40 @@
                 <p>Temukan dan pinjam koleksi buku terbaik kami secara online dengan mudah.</p>
             </div>
 
+            <div class="row mb-4">
+
+                <div class="col-md-4">
+                    <div class="panel panel-info text-center">
+                        <div class="panel-body">
+                            <i class="fa fa-book fa-2x"></i>
+                            <h4>Total Judul Buku</h4>
+                            <h2>{{ $totalBooks }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-success text-center">
+                        <div class="panel-body">
+                            <i class="fa fa-archive fa-2x"></i>
+                            <h4>Total Stok Buku</h4>
+                            <h2>{{ $totalStock }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-warning text-center">
+                        <div class="panel-body">
+                            <i class="fa fa-exchange fa-2x"></i>
+                            <h4>Buku Dipinjam</h4>
+                            <h2>{{ $borrowedBooks }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-list-alt"></i> Daftar Koleksi Buku
@@ -151,6 +185,29 @@
                 var qty = $('#loan_qty').val();
                 var return_date = $('#return_date').val();
 
+
+                if (qty > 5) {
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Batas Maksimal',
+                        text: 'Maksimal peminjaman buku adalah 5.'
+                    });
+
+                    return;
+                }
+
+                if (qty < 1) {
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Jumlah tidak valid',
+                        text: 'Minimal peminjaman adalah 1 buku.'
+                    });
+
+                    return;
+                }
+
                 $.ajax({
 
                     url: "{{ url('user/home/loans/store') }}",
@@ -183,13 +240,13 @@
 
                     error: function(xhr) {
 
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Waduh...',
-                            text: 'Terjadi kesalahan saat memproses peminjaman.'
-                        });
+                        let res = xhr.responseJSON;
 
-                        console.log(xhr.responseText);
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Tidak Bisa Meminjam',
+                            text: res.message
+                        });
 
                     }
 

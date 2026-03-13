@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Book;
+
 
 class HomeController extends Controller
 {
@@ -17,7 +19,22 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home');
+        $books = Book::all();
+
+        $totalBooks = $books->count();
+
+        $totalStock = $books->sum('stock');
+
+        $borrowedBooks = DB::table('loans')
+            ->where('status', 'borrowed')
+            ->count();
+
+        return view('home', compact(
+            'books',
+            'totalBooks',
+            'totalStock',
+            'borrowedBooks'
+        ));
     }
 
     public function datatable(Request $request)
@@ -75,6 +92,13 @@ class HomeController extends Controller
             'qty'     => 'required|integer|min:1'
         ]);
 
+        if ($request->qty > 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Maksimal peminjaman buku adalah 5'
+            ], 400);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -96,6 +120,21 @@ class HomeController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Stok buku tidak mencukupi'
+                ], 400);
+            }
+
+            // cek apakah user sudah meminjam buku yang sama dan belum dikembalikan
+            $existingLoan = DB::table('loans')
+                ->join('loan_details', 'loan_details.loan_id', '=', 'loans.id')
+                ->where('loans.user_id', Auth::id())
+                ->where('loan_details.book_id', $request->book_id)
+                ->where('loans.status', 'borrowed')
+                ->first();
+
+            if ($existingLoan) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah meminjam buku ini dan belum mengembalikannya.'
                 ], 400);
             }
 

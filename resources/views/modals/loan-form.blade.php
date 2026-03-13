@@ -23,7 +23,8 @@
 
                 <div class="form-group">
                     <label>Jumlah Pinjam</label>
-                    <input type="number" id="loan_qty" class="form-control" value="1" min="1">
+                    <input type="number" id="loan_qty" class="form-control" value="1" min="1"
+                        max="5">
                 </div>
 
                 <div class="form-group">

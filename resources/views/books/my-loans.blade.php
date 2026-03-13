@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-warning text-center">
+                <div class="panel-body">
+                    <i class="fa fa-exchange fa-2x"></i>
+                    <h4>Buku Dipinjam</h4>
+                    <h2>{{ $borrowedBooks }}</h2>
+                </div>
+            </div>
+        </div>
+
+
         <div class="col-md-12">
 
             <div class="panel panel-default">
@@ -9,6 +21,7 @@
                 <div class="panel-heading">
                     <i class="fa fa-bookmark"></i> Daftar Pinjaman Buku Anda
                 </div>
+
 
                 <div class="panel-body">
 
