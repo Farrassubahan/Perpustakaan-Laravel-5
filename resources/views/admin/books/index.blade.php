@@ -4,13 +4,12 @@
     <div class="container">
         <h3>Kelola Buku</h3>
         <button class="btn btn-primary" id="btn-add">Tambah Buku</button>
-        <br><br>
+        {{-- <br><br> --}}
 
-        <button class="btn btn-primary" data-toggle="modal" data-target="#importModal">
+        <button class="btn btn-warning" data-toggle="modal" data-target="#importModal">
             Import Excel
         </button>
 
-        <br><br>
 
         <table class="table table-bordered" id="books-table">
             <thead>

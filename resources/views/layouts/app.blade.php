@@ -66,6 +66,11 @@
                                         <i class="fa fa-tags"></i> Kategori
                                     </a>
                                 </li>
+                                <li class="{{ Route::is('admin.users.*') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.users.index') }}">
+                                        <i class="fa fa-users"></i> Users
+                                    </a>
+                                </li>
                             @endrole
 
 

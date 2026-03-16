@@ -65,4 +65,15 @@ Route::group([
     Route::post('categories/update/{id}', ['as' => 'admin.categories.update', 'uses' => 'Admin\CategoryController@update']);
 
     Route::delete('categories/delete/{id}', ['as' => 'admin.categories.delete', 'uses' => 'Admin\CategoryController@destroy']);
+
+    // KELOLA USER
+    Route::get('users', [
+        'as'   => 'admin.users.index',
+        'uses' => 'Admin\UserController@index'
+    ]);
+
+    Route::get('users/data', [
+        'as'   => 'admin.users.data-user',
+        'uses' => 'Admin\UserController@datatable'
+    ]);
 });
