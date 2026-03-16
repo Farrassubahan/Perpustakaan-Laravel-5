@@ -12,7 +12,7 @@ class Book extends Model
         'title',
         'author',
         'publisher',
-        'year',
+        'release_year',
         'stock'
     ];
 

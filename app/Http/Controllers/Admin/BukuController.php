@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Book;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Facades\Datatables;
 
 class BukuController extends Controller
@@ -136,5 +138,35 @@ class BukuController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+     public function import(Request $request)
+    {
+        error_reporting(E_ALL ^ E_DEPRECATED ^ E_NOTICE ^ E_WARNING);
+
+        $file = $request->file('file');
+
+        Excel::load($file->getRealPath(), function($reader) {
+
+            $rows = $reader->get();
+
+            // dd($rows);
+
+            foreach ($rows as $row) {
+
+                DB::table('books')->insert([
+                    'category_id' => $row->category_id,
+                    'title' => $row->title,
+                    'author' => $row->author,
+                    'publisher' => $row->publisher,
+                    'release_year' => $row->release_year,
+                    'stock' => $row->stock,
+                ]);
+
+            }
+
+        });
+
+        return redirect()->back()->with('success', 'Import berhasil');
     }
 }

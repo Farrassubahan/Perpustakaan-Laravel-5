@@ -5,6 +5,10 @@
         <h3>Dashboard Data Buku</h3>
         <hr>
 
+   
+
+   
+
         <table class="table table-bordered table-striped" id="books-table">
             <thead>
                 <tr>
@@ -18,6 +22,10 @@
                 </tr>
             </thead>
         </table>
+
+
+      
+
     </div>
 @endsection
 

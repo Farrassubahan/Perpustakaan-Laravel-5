@@ -9,6 +9,7 @@
         "anhskohbo/no-captcha": "2.4",
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.3.*",
+        "maatwebsite/excel": "2.1.*",
         "santigarcor/laratrust": "3.0.*",
         "yajra/laravel-datatables-oracle": "~6.0"
     },
@@ -53,6 +54,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "kylekatarnls/update-helper": true
+        },
+        "audit": {
+            "block-insecure": false
         }
     }
 }

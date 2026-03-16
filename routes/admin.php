@@ -5,6 +5,11 @@ Route::group([
     'middleware' => ['auth', 'role:admin']
 ], function () {
 
+    // import excel
+    Route::post('books/import', [
+        'as'   => 'admin.books.import',
+        'uses' => 'Admin\BukuController@import'
+    ]);
     // DASHBOARD
     Route::get('dashboard', [
         'as'   => 'admin.dashboard',
@@ -32,6 +37,7 @@ Route::group([
         'uses' => 'Admin\BukuController@store'
     ]);
 
+
     Route::get('books/{id}', [
         'as'   => 'admin.books.show',
         'uses' => 'Admin\BukuController@show'
@@ -57,6 +63,6 @@ Route::group([
     Route::get('categories/{id}', ['as' => 'admin.categories.show', 'uses' => 'Admin\CategoryController@show']);
 
     Route::post('categories/update/{id}', ['as' => 'admin.categories.update', 'uses' => 'Admin\CategoryController@update']);
-    
+
     Route::delete('categories/delete/{id}', ['as' => 'admin.categories.delete', 'uses' => 'Admin\CategoryController@destroy']);
 });

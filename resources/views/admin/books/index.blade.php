@@ -6,6 +6,12 @@
         <button class="btn btn-primary" id="btn-add">Tambah Buku</button>
         <br><br>
 
+        <button class="btn btn-primary" data-toggle="modal" data-target="#importModal">
+            Import Excel
+        </button>
+
+        <br><br>
+
         <table class="table table-bordered" id="books-table">
             <thead>
                 <tr>
@@ -75,6 +81,8 @@
             </div>
         </div>
     </div>
+
+    @include('admin.books.modal-excel')
 @endsection
 
 @section('scripts')

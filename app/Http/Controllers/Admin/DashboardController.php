@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Yajra\Datatables\Datatables; // Pastikan import ini ada di atas
-// use DB;
+use Yajra\Datatables\Datatables; 
+
 
 class DashboardController extends Controller
 {
@@ -55,5 +55,10 @@ class DashboardController extends Controller
         return Datatables::of($query)
             ->addIndexColumn()
             ->make(true);
-    }   
+    }
+
+
+
+
+
 }
