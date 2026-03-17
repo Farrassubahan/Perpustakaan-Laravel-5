@@ -23,8 +23,7 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->string('publisher')->nullable();
 
-            // sebelumnya year()
-            $table->integer('year')->nullable();
+            $table->integer('release_year')->nullable();
 
             $table->integer('stock')->default(0);
 

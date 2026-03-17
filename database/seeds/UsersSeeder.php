@@ -15,8 +15,8 @@ class UsersSeeder extends Seeder
         $adminRole->save();
         // Membuat role member
         $memberRole = new Role();
-        $memberRole->name = "member";
-        $memberRole->display_name = "Member";
+        $memberRole->name = "user";
+        $memberRole->display_name = "User";
         $memberRole->save();
         // Membuat sample admin
         $admin = new User();

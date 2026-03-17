@@ -76,4 +76,29 @@ Route::group([
         'as'   => 'admin.users.data-user',
         'uses' => 'Admin\UserController@datatable'
     ]);
+
+    Route::get('users/create', [
+        'as'   => 'admin.users.create',
+        'uses' => 'Admin\UserController@create'
+    ]);
+
+    Route::post('users/store', [
+        'as'   => 'admin.users.store',
+        'uses' => 'Admin\UserController@store'
+    ]);
+
+    Route::get('users/{id}/edit', [
+        'as'   => 'admin.users.edit',
+        'uses' => 'Admin\UserController@edit'
+    ]);
+
+    Route::post('users/{id}/update', [
+        'as'   => 'admin.users.update',
+        'uses' => 'Admin\UserController@update'
+    ]);
+
+    Route::delete('users/{id}', [
+        'as'   => 'admin.users.destroy',
+        'uses' => 'Admin\UserController@destroy'
+    ]);
 });
