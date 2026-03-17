@@ -10,6 +10,14 @@
             Import Excel
         </button>
 
+        <a href="{{ route('admin.buku.export.excel') }}" class="btn btn-success">
+            Export Excel
+        </a>
+
+        <a href="{{ route('admin.buku.export.pdf') }}" class="btn btn-danger">
+            Export PDF
+        </a>
+
 
         <table class="table table-bordered" id="books-table">
             <thead>

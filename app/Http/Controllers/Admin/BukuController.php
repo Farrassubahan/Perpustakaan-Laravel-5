@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Facades\Datatables;
+use PDF;
 
 class BukuController extends Controller
 {
@@ -140,33 +141,78 @@ class BukuController extends Controller
         }
     }
 
-     public function import(Request $request)
+    public function import(Request $request)
     {
         error_reporting(E_ALL ^ E_DEPRECATED ^ E_NOTICE ^ E_WARNING);
 
         $file = $request->file('file');
 
-        Excel::load($file->getRealPath(), function($reader) {
+        Excel::load($file->getRealPath(), function ($reader) {
+
+            // paksa tidak membaca header
+            $reader->noHeading();
 
             $rows = $reader->get();
 
-            // dd($rows);
-
             foreach ($rows as $row) {
 
+                if (!$row[0]) {
+                    continue;
+                }
+
                 DB::table('books')->insert([
-                    'category_id' => $row->category_id,
-                    'title' => $row->title,
-                    'author' => $row->author,
-                    'publisher' => $row->publisher,
-                    'release_year' => $row->release_year,
-                    'stock' => $row->stock,
+                    'category_id' => $row[0],
+                    'title'       => $row[1],
+                    'author'      => $row[2],
+                    'publisher'   => $row[3],
+                    'release_year' => $row[4],
+                    'stock'       => $row[5],
                 ]);
-
             }
-
         });
 
         return redirect()->back()->with('success', 'Import berhasil');
+    }
+
+    // fungsi untuk ekspor data buku ke format excel
+    public function exportExcel()
+    {
+        $data = DB::table('books')->get();
+
+        return Excel::create('Data_Buku', function ($excel) use ($data) {
+
+            $excel->sheet('Buku', function ($sheet) use ($data) {
+
+                $sheet->row(1, [
+                    'ID',
+                    'Judul',
+                    'Penulis',
+                    'Tahun'
+                ]);
+
+                $row = 2;
+
+                foreach ($data as $buku) {
+                    $sheet->row($row, [
+                        $buku->id,
+                        $buku->judul,
+                        $buku->penulis,
+                        $buku->tahun
+                    ]);
+
+                    $row++;
+                }
+            });
+        })->download('xlsx');
+    }
+
+    // fungsi untuk ekspor data buku ke format PDF
+    public function exportPdf()
+    {
+        $data = DB::table('books')->get();
+
+        $pdf = PDF::loadView('admin.books.pdf', compact('data'));
+
+        return $pdf->download('data_buku.pdf');
     }
 }

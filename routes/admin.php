@@ -53,6 +53,18 @@ Route::group([
         'uses' => 'Admin\BukuController@destroy'
     ]);
 
+    // eksport data buku 
+    Route::get('buku/export/excel', [
+        'as'   => 'admin.buku.export.excel',
+        'uses' => 'Admin\BukuController@exportExcel'
+    ]);
+
+    Route::get('buku/export/pdf', [
+        'as'   => 'admin.buku.export.pdf',
+        'uses' => 'Admin\BukuController@exportPdf'
+    ]);
+
+
     // Tambahkan ini di dalam group admin
     Route::get('categories', ['as' => 'admin.categories.index', 'uses' => 'Admin\CategoryController@index']);
 
