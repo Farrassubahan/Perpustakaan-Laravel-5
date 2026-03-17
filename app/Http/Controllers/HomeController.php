@@ -22,7 +22,7 @@ class HomeController extends Controller
         $books = Book::all();
 
         $totalBooks = $books->count();
-
+ 
         $totalStock = $books->sum('stock');
 
         $borrowedBooks = DB::table('loans')
@@ -54,11 +54,10 @@ class HomeController extends Controller
         return Datatables::of($query)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $btnStyle = "display: inline-block; padding: 6px 20px; color: white; border-radius: 6px; border: none; cursor: pointer; background-color: #E9B263; font-weight: 500;";
-
                 return '<div style="text-align:center;">
-                <button class="btn-detail" data-id="' . $row->id . '" style="' . $btnStyle . '">
-                    Detail
+                <button class="btn btn-sm btn-info btn-detail" data-id="' . $row->id . '" 
+                    style="border-radius: 6px; padding: 4px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <i class="fa fa-info-circle"></i> Detail
                 </button>
             </div>';
             })

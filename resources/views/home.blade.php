@@ -48,7 +48,11 @@
                     <i class="fa fa-list-alt"></i> Daftar Koleksi Buku
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body" style="padding-top: 10px; padding-bottom: 0;">
+                    <button id="openModalBooks" class="btn btn-primary" style="margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
+                        <i class="fa fa-search"></i> Cari & Lihat Koleksi Buku
+                    </button>
+                </div>
                     <div class="table-responsive">
                         <table class="table table-hover" id="books-table" width="100%">
                             <thead>
@@ -74,6 +78,7 @@
 
     @include('modals.book-detail')
     @include('modals.loan-form')
+    @include('modals._modals-buku')
 @endsection
 
 
@@ -250,6 +255,88 @@
 
                     }
 
+                });
+
+            });
+
+
+            $(document).ready(function() {
+
+                let tableBooks = null;
+
+                function initTable() {
+                    tableBooks = $('#tableBooks').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        searching: true,
+                        ajax: function(data, callback, settings) {
+
+                            let keyword = data.search.value;
+
+                            if (!keyword || keyword.length < 1) {
+                                callback({
+                                    data: [],
+                                    recordsTotal: 0,
+                                    recordsFiltered: 0
+                                });
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '/user/home/datatable',
+                                type: 'GET',
+                                data: data,
+                                success: function(res) {
+                                    callback(res);
+                                }
+                            });
+                        },
+                        columns: [{
+                                data: null,
+                                orderable: false,
+                                searchable: false,
+                                render: function(data, type, row, meta) {
+                                    return meta.row + 1;
+                                }
+                            },
+                            {
+                                data: 'title',
+                                name: 'books.title'
+                            },
+                            {
+                                data: 'author',
+                                name: 'books.author'
+                            },
+                            {
+                                data: 'category',
+                                name: 'categories.name'
+                            },
+                            {
+                                data: 'id',
+                                orderable: false,
+                                searchable: false,
+                                render: function(data, type, row) {
+                                    return `
+                <button class="btn-detail" data-id="${data}" data-title="${row.title}" data-author="${row.author}" data-category="${row.category}">
+                    Detail
+                </button>
+            `;
+                                }
+                            }
+                        ]
+                    });
+                }
+
+                $('#openModalBooks').on('click', function() {
+                    $('#modalBooks').modal('show');
+
+                    if (tableBooks === null) {
+                        initTable();
+                    }
+                });
+
+                $('#closeModalBooks').on('click', function() {
+                    $('#modalBooks').hide();
                 });
 
             });
