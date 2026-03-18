@@ -113,4 +113,12 @@ Route::group([
         'as'   => 'admin.users.destroy',
         'uses' => 'Admin\UserController@destroy'
     ]);
+   
+   
+    Route::get('/dashboard/chart-data', [
+        'as'   => 'admin.dashboard.chart-data',
+        'uses' => 'Admin\DashboardController@chartData'
+    ]);
+
+
 });

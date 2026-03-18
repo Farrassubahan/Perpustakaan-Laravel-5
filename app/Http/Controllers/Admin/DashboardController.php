@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Yajra\Datatables\Datatables; 
+use Yajra\Datatables\Datatables;
 
 
 class DashboardController extends Controller
@@ -57,8 +57,28 @@ class DashboardController extends Controller
             ->make(true);
     }
 
+    public function chartData()
+    {
+        // summary
+        $totalUsers = DB::table('users')->count();
+        $totalBooks = DB::table('books')->count();
+        $totalCategories = DB::table('categories')->count();
 
+        // books per category
+        $booksPerCategory = DB::table('books')
+            ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->select('categories.name', DB::raw('COUNT(books.id) as total'))
+            ->groupBy('categories.name')
+            ->orderBy('categories.name')
+            ->get();
 
-
-
+        return response()->json([
+            'summary' => [
+                'users' => $totalUsers,
+                'books' => $totalBooks,
+                'categories' => $totalCategories
+            ],
+            'books_per_category' => $booksPerCategory
+        ]);
+    }
 }
