@@ -1,30 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>List Users</h3>
-
-        <button class="btn btn-primary mb-3" id="btnCreateUser">
-            Tambah User
-        </button>
-
-        <table class="table table-bordered" id="users-table">
-
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Tanggal Daftar</th>
-                </tr>
-            </thead>
-        </table>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fa fa-users"></i> Master Data Users</span>
+                    <button class="btn btn-primary" id="btnCreateUser">
+                        <i class="fa fa-user-plus"></i> Tambah User Baru
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th>Nama Pengguna</th>
+                                    <th>Alamat Email</th>
+                                    <th>Role / Hak Akses</th>
+                                    <th>Tanggal Daftar</th>
+                                    <th width="120">Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @include('admin.users.modal')
 @endsection
+
 
 @section('scripts')
     <script>
@@ -67,57 +75,38 @@
 
 
             $('#btnCreateUser').click(function() {
-
                 $('#userForm')[0].reset();
-
                 $('#user_id').val('');
                 $('#userModalLabel').text('Tambah User');
-
                 $('#userModal').modal('show');
-
             });
 
 
             $('body').on('click', '.btn-edit', function() {
-
                 var id = $(this).data('id');
-
                 $.get("/admin/users/" + id + "/edit", function(data) {
-
                     $('#userModal').modal('show');
-
                     $('#userModalLabel').text('Edit User');
-
                     $('#user_id').val(data.id);
                     $('#name').val(data.name);
                     $('#email').val(data.email);
                     $('#role_id').val(data.role_id);
-
                     $('#password').val('');
-
                 });
-
             });
 
 
             $('#userForm').submit(function(e) {
-
                 e.preventDefault();
-
                 var id = $('#user_id').val();
                 var url = id ? "/admin/users/" + id + "/update" : "{{ route('admin.users.store') }}";
-
                 $.ajax({
                     url: url,
                     type: "POST",
                     data: $(this).serialize(),
-
                     success: function() {
-
                         $('#userModal').modal('hide');
-
                         table.ajax.reload();
-
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
@@ -125,29 +114,20 @@
                             timer: 2000,
                             showConfirmButton: false
                         });
-
                     },
-
                     error: function() {
-
                         Swal.fire({
                             icon: 'error',
                             title: 'Gagal',
                             text: 'Terjadi kesalahan'
                         });
-
                     }
-
                 });
-
             });
 
 
-            // delete user
             $('body').on('click', '.btn-delete', function() {
-
                 var id = $(this).data('id');
-
                 Swal.fire({
                     title: 'Yakin hapus user?',
                     text: "Data tidak bisa dikembalikan",
@@ -156,9 +136,7 @@
                     confirmButtonText: 'Ya hapus',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
-
                     if (result.isConfirmed) {
-
                         $.ajax({
                             url: "/admin/users/" + id,
                             type: "POST",
@@ -166,11 +144,8 @@
                                 _method: "DELETE",
                                 _token: "{{ csrf_token() }}"
                             },
-
                             success: function(response) {
-
                                 if (response.success) {
-
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil',
@@ -178,54 +153,36 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     });
-
                                     table.ajax.reload();
-
                                 } else {
-
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Gagal',
                                         text: response.message
                                     });
-
                                 }
-
                             },
-
                             error: function(xhr) {
-
                                 if (xhr.status === 500) {
-
                                     Swal.fire({
                                         icon: 'warning',
                                         title: 'Akses ditolak',
                                         text: 'Anda tidak memiliki akses untuk menghapus user'
                                     });
-
                                 } else {
-
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Error',
                                         text: 'Terjadi kesalahan saat menghapus data'
                                     });
-
                                 }
-
                             }
-
                         });
-
                     }
-
                 });
-
             });
 
-            // buat nambah role dinamis
             $('#addRole').click(function() {
-
                 var roleSelect = `
                     <div class="role-item mb-2 d-flex">
                         <select name="role_id[]" class="form-control mr-2">
@@ -241,16 +198,12 @@
                         </button>
                     </div>
                 `;
-
                 $('#roles-wrapper').append(roleSelect);
-
             });
 
 
             $('body').on('click', '.btn-remove-role', function() {
-
                 $(this).closest('.role-item').remove();
-
             });
 
 

@@ -1,62 +1,109 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Dashboard Data Buku</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header" style="margin-top: 0; border-bottom: 2px solid #edf2f7; padding-bottom: 10px;">
+                <i class="fa fa-dashboard"></i> Dashboard Ringkasan Data
+            </h3>
+        </div>
+    </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div style="height:300px;">
-                    <canvas id="booksChart"></canvas>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #eff6ff; color: #2563eb;">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-value" id="count-users">-</div>
                 </div>
             </div>
-
-            <div class="col-md-3">
-                <div style="height:300px;">
-                    <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #f0fdf4; color: #16a34a;">
+                    <i class="fa fa-book"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Buku</div>
+                    <div class="stat-value" id="count-books">-</div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fff7ed; color: #ea580c;">
+                    <i class="fa fa-tags"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Kategori</div>
+                    <div class="stat-value" id="count-categories">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="col-md-3">
-                <div style="height:300px;">
-                    <canvas id="userChart"></canvas>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart"></i> Grafik Buku per Kategori
+                </div>
+                <div class="panel-body">
+                    <div style="height:350px;">
+                        <canvas id="booksChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <hr>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-pie-chart"></i> Distribusi Kategori
+                </div>
+                <div class="panel-body">
+                    <div style="height:350px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-        <table class="table table-bordered table-striped" id="books-table">
-            <thead>
-                <tr>
-                    <th width="5%">No</th>
-                    <th>Judul</th>
-                    <th>Author</th>
-                    <th>Kategori</th>
-                    <th>Publisher</th>
-                    <th>Tahun</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-        </table>
-
-
-
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-list"></i> Daftar Buku Terbaru
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="books-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th>Judul</th>
+                                    <th>Author</th>
+                                    <th>Kategori</th>
+                                    <th>Publisher</th>
+                                    <th>Tahun</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
-@section('scripts')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
 
+@section('scripts')
     <script>
         $(function() {
-
-            // 🔥 DATATABLE
             $('#books-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -87,106 +134,68 @@
                 ]
             });
 
-            //FETCH DATA
             fetch('/admin/dashboard/chart-data')
                 .then(res => res.json())
                 .then(res => {
-
+                    $('#count-users').text(res.summary.users);
+                    $('#count-books').text(res.summary.books);
+                    $('#count-categories').text(res.summary.categories);
 
                     new Chart(document.getElementById('booksChart'), {
                         type: 'bar',
                         data: {
                             labels: res.books_per_category.map(i => i.name),
                             datasets: [{
-                                label: 'Books per Category',
+                                label: 'Buku',
                                 data: res.books_per_category.map(i => i.total),
-
-                                // 🔥 WARNA WARNA (AUTO LOOP)
                                 backgroundColor: [
-                                    '#4e73df',
-                                    '#1cc88a',
-                                    '#36b9cc',
-                                    '#f6c23e',
-                                    '#e74a3b',
-                                    '#858796'
+                                    '#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'
                                 ],
-
-                               
-                                borderRadius: 10, 
-                                borderSkipped: false,
-                                barThickness: 30
+                                borderRadius: 4,
+                                barThickness: 25
                             }]
                         },
                         options: {
                             maintainAspectRatio: false,
-
                             plugins: {
-                                legend: {
-                                    display: false
-                                }
+                                legend: { display: false }
                             },
-
                             scales: {
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#eee'
-                                    }
-                                }
+                                x: { grid: { display: false } },
+                                y: { beginAtZero: true, grid: { color: '#f1f5f9' } }
                             }
                         }
                     });
 
                     new Chart(document.getElementById('categoryChart'), {
-                        type: 'polarArea',
+                        type: 'doughnut',
                         data: {
                             labels: res.books_per_category.map(i => i.name),
                             datasets: [{
                                 data: res.books_per_category.map(i => i.total),
                                 backgroundColor: [
-                                    '#1cc88a',
-                                    '#36b9cc',
-                                    '#f6c23e',
-                                    '#e74a3b',
-                                    '#858796'
-                                ]
-                            }]
-                        },
-                        options: {
-                            maintainAspectRatio: false
-                        }
-                    });
-
-
-                    new Chart(document.getElementById('userChart'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Users', 'Books', 'Categories'],
-                            datasets: [{
-                                data: [
-                                    res.summary.users,
-                                    res.summary.books,
-                                    res.summary.categories
+                                    '#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'
                                 ],
-                                backgroundColor: [
-                                    '#6f42c1',
-                                    '#20c997',
-                                    '#fd7e14'
-                                ]
+                                borderWidth: 3,
+                                borderColor: '#ffffff'
                             }]
                         },
                         options: {
-                            maintainAspectRatio: false
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20,
+                                        font: { size: 11 }
+                                    }
+                                }
+                            },
+                            cutout: '70%'
                         }
                     });
-
                 });
-
         });
     </script>
 @endsection

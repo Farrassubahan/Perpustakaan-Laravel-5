@@ -3,33 +3,50 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Laporan Data Buku</title>
+    <title>Laporan Data Buku - Corporate Style</title>
 
     <style>
+        @page {
+            margin: 1cm;
+        }
+
         body {
-            font-family: DejaVu Sans, sans-serif;
+            font-family: 'Helvetica', 'Arial', sans-serif;
             font-size: 12px;
-            color: #333;
+            color: #1e293b;
+            line-height: 1.4;
         }
 
         .header {
-            text-align: center;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
             margin-bottom: 20px;
         }
 
-        .header h2 {
+        .header table {
+            width: 100%;
+            border: none;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
             margin: 0;
-            padding: 0;
         }
 
-        .header p {
-            margin: 2px;
-            font-size: 11px;
+        .report-title {
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 5px 0 0 0;
         }
 
-        .info {
-            margin-bottom: 10px;
-            font-size: 11px;
+        .meta-info {
+            text-align: right;
+            font-size: 10px;
+            color: #64748b;
         }
 
         table {
@@ -39,29 +56,35 @@
         }
 
         table thead th {
-            background: #f2f2f2;
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
+            background: #f8fafc;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: bold;
         }
 
         table tbody td {
-            border: 1px solid #000;
-            padding: 6px;
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            color: #334155;
         }
 
-        .no {
-            width: 40px;
-            text-align: center;
+        table tbody tr:nth-child(even) {
+            background-color: #f1f5f9;
         }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
 
         .footer {
-            margin-top: 20px;
-            font-size: 11px;
-        }
-
-        .right {
-            text-align: right;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 5px;
+            font-size: 9px;
+            color: #9403b8;
         }
     </style>
 </head>
@@ -69,46 +92,55 @@
 <body>
 
     <div class="header">
-        <h2>Laporan Data Buku</h2>
-        <p>Sistem Manajemen Perpustakaan</p>
-    </div>
-
-    <div class="info">
-        <strong>Tanggal Cetak :</strong> {{ date('d-m-Y') }}
+        <table>
+            <tr>
+                <td>
+                    <h1 class="brand-name">L-FARPUS LIBRARY</h1>
+                    <h2 class="report-title">LAPORAN DATA KOLEKSI BUKU</h2>
+                </td>
+                <td class="meta-info">
+                    <strong>Tanggal Cetak:</strong> {{ date('d F Y') }}<br>
+                    <strong>Waktu:</strong> {{ date('H:i') }}
+                </td>
+            </tr>
+        </table>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th class="no">No</th>
-                <th>Judul Buku</th>
-                <th>Penulis</th>
-                <th>Tahun</th>
-                <th>Penerbit</th>
+                <th class="text-center" width="30">NO</th>
+                <th>JUDUL BUKU</th>
+                <th>PENULIS</th>
+                <th class="text-center" width="50">TAHUN</th>
+                <th>PENERBIT</th>
             </tr>
         </thead>
 
         <tbody>
-
             @php $no = 1; @endphp
-
             @foreach ($data as $buku)
                 <tr>
-                    <td class="no">{{ $no++ }}</td>
-                    <td>{{ $buku->title }}</td>
+                    <td class="text-center">{{ $no++ }}</td>
+                    <td><strong>{{ $buku->title }}</strong></td>
                     <td>{{ $buku->author }}</td>
-                    <td>{{ $buku->release_year }}</td>
+                    <td class="text-center">{{ $buku->release_year }}</td>
                     <td>{{ $buku->publisher }}</td>
                 </tr>
             @endforeach
-
         </tbody>
     </table>
 
-    <div class="footer right">
-        Dicetak oleh sistem
+    <div class="footer">
+        <table>
+            <tr>
+                <td>Sistem Manajemen Perpustakaan &copy; {{ date('Y') }}</td>
+                <td class="text-right">Dokumen ini dihasilkan secara otomatis oleh sistem.</td>
+            </tr>
+        </table>
     </div>
 
 </body>
 
 </html>
+

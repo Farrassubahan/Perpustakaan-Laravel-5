@@ -1,93 +1,122 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Kelola Buku</h3>
-        <button class="btn btn-primary" id="btn-add">Tambah Buku</button>
-        {{-- <br><br> --}}
-
-        <button class="btn btn-warning" data-toggle="modal" data-target="#importModal">
-            Import Excel
-        </button>
-
-        <a href="{{ route('admin.buku.export.excel') }}" class="btn btn-success">
-            Export Excel
-        </a>
-
-        <a href="{{ route('admin.buku.export.pdf') }}" class="btn btn-danger">
-            Export PDF
-        </a>
-
-
-        <table class="table table-bordered" id="books-table">
-            <thead>
-                <tr>
-                    <th width="5%">No</th>
-                    <th>Judul</th>
-                    <th>Author</th>
-                    <th>Kategori</th>
-                    <th>Publisher</th>
-                    <th>Tahun</th>
-                    <th>Stock</th>
-                    <th width="150">Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-
-    {{-- MODAL FORM --}}
-    <div class="modal fade" id="modal-book">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title">Tambah Buku</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fa fa-book"></i> Katalog Koleksi Buku</span>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="btn-add">
+                            <i class="fa fa-plus"></i> Tambah Buku
+                        </button>
+                        <button class="btn btn-info shadow-sm" data-toggle="modal" data-target="#importModal">
+                            <i class="fa fa-upload"></i> Import
+                        </button>
+                        <a href="{{ route('admin.buku.export.excel') }}" class="btn btn-success shadow-sm">
+                            <i class="fa fa-file-excel-o"></i> Excel
+                        </a>
+                        <a href="{{ route('admin.buku.export.pdf') }}" class="btn btn-danger shadow-sm">
+                            <i class="fa fa-file-pdf-o"></i> PDF
+                        </a>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="form-book">
-                        <input type="hidden" id="book_id">
-
-                        <div class="form-group">
-                            <label>Kategori</label>
-                            <select class="form-control" id="category_id">
-                                @foreach ($categories as $c)
-                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Judul</label>
-                            <input type="text" class="form-control" id="title">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Author</label>
-                            <input type="text" class="form-control" id="author">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Publisher</label>
-                            <input type="text" class="form-control" id="publisher">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Tahun</label>
-                            <input type="number" class="form-control" id="release_year">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Stock</label>
-                            <input type="number" class="form-control" id="stock">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" id="btn-save">Simpan</button>
-                    <button class="btn btn-default" data-dismiss="modal">Tutup</button>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="books-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th>Judul Buku</th>
+                                    <th>Penulis</th>
+                                    <th>Kategori</th>
+                                    <th>Penerbit</th>
+                                    <th>Tahun</th>
+                                    <th>Stok</th>
+                                    <th width="120">Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="modal-book" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 8px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                <div class="modal-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; border-radius: 8px 8px 0 0;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="modal-title" style="font-weight: 700; color: #1e293b;">
+                        <i class="fa fa-book"></i> Form Data Buku
+                    </h4>
+                </div>
+                <div class="modal-body" style="padding: 25px;">
+                    <form id="form-book">
+                        <input type="hidden" id="book_id">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Judul Buku</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Masukkan judul buku...">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Kategori</label>
+                                    <select class="form-control" id="category_id">
+                                        @foreach ($categories as $c)
+                                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Penulis / Author</label>
+                                    <input type="text" class="form-control" id="author" placeholder="Nama penulis...">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Penerbit / Publisher</label>
+                                    <input type="text" class="form-control" id="publisher" placeholder="Nama penerbit...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Tahun Terbit</label>
+                                    <input type="number" class="form-control" id="release_year" placeholder="YYYY">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label style="font-weight: 600; color: #475569;">Jumlah Stok</label>
+                                    <input type="number" class="form-control" id="stock" placeholder="0">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background: #f8fafc; border-radius: 0 0 8px 8px;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" id="btn-save" style="min-width: 120px;">
+                        <i class="fa fa-save"></i> Simpan Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     @include('admin.books.modal-excel')
 @endsection
@@ -95,7 +124,6 @@
 @section('scripts')
     <script>
         $(function() {
-            // 1. Inisialisasi DataTable
             var table = $('#books-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -139,7 +167,6 @@
                 ]
             });
 
-            // 2. Tombol Tambah (Reset Form & Buka Modal)
             $('#btn-add').click(function() {
                 $('#form-book')[0].reset();
                 $('#book_id').val('');
@@ -147,7 +174,6 @@
                 $('#modal-book').modal('show');
             });
 
-            // 3. Simpan (Store atau Update)
             $('#btn-save').click(function() {
                 var id = $('#book_id').val();
                 var url = id ? "{{ url('admin/books/update') }}/" + id : "{{ route('admin.books.store') }}";
@@ -168,7 +194,6 @@
                         $('#modal-book').modal('hide');
                         table.ajax.reload();
 
-                        // NOTIFIKASI SUKSES
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil!',
@@ -178,29 +203,16 @@
                         });
                     },
                     error: function(xhr) {
-                        // NOTIFIKASI ERROR
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Waduh...',
-                            text: 'Terjadi kesalahan sistem saat menyimpan data.',
-                        });
-                    },
-
-                    error: function(xhr) {
-
                         let res = xhr.responseJSON;
-
                         Swal.fire(
                             'Tidak Bisa Mengubah!',
                             res.message,
                             'warning'
                         );
-
                     }
                 });
             });
 
-            // 4. Tombol Edit (Ambil Data ke Modal)
             $('body').on('click', '.edit', function() {
                 var id = $(this).data('id');
                 $.get("{{ url('admin/books') }}/" + id, function(data) {
@@ -216,9 +228,7 @@
                 });
             });
 
-            // tombol delete buku
             $('body').on('click', '.delete', function() {
-
                 var id = $(this).data('id');
 
                 Swal.fire({
@@ -231,65 +241,41 @@
                     confirmButtonText: 'Ya, Hapus!',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
-
                     if (result.isConfirmed) {
-
                         $.ajax({
-
                             url: "{{ url('admin/books/delete') }}/" + id,
                             type: "DELETE",
                             dataType: "json",
-
                             data: {
                                 _token: "{{ csrf_token() }}"
                             },
-
                             success: function(res) {
-
-                                // jika tidak boleh dihapus
                                 if (!res.status) {
-
                                     Swal.fire(
                                         'Tidak Bisa Menghapus!',
                                         res.message,
                                         'warning'
                                     );
-
                                     return;
                                 }
-
-                                // reload datatable
                                 table.ajax.reload();
-
                                 Swal.fire(
                                     'Terhapus!',
                                     res.message,
                                     'success'
                                 );
-
                             },
-
                             error: function(xhr) {
-
-                                console.log(xhr.responseText);
-
                                 Swal.fire(
                                     'Error',
                                     'Terjadi kesalahan sistem.',
                                     'error'
                                 );
-
                             }
-
                         });
-
                     }
-
                 });
-
             });
-
-
-        }); // Penutup function utama
+        });
     </script>
 @endsection
