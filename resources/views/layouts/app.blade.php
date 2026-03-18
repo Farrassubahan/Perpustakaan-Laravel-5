@@ -71,6 +71,11 @@
                                         <i class="fa fa-users"></i> Users
                                     </a>
                                 </li>
+                                <li class="{{ Route::is('admin.user.monitoring') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.user.monitoring') }}">
+                                        <i class="fa fa-user"></i> User Monitoring
+                                    </a>
+                                </li>
                             @endrole
 
 

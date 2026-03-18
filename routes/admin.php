@@ -113,12 +113,20 @@ Route::group([
         'as'   => 'admin.users.destroy',
         'uses' => 'Admin\UserController@destroy'
     ]);
-   
-   
+
+
     Route::get('/dashboard/chart-data', [
         'as'   => 'admin.dashboard.chart-data',
         'uses' => 'Admin\DashboardController@chartData'
     ]);
 
+    Route::get('/user-monitoring', [
+        'as'   => 'admin.user.monitoring',
+        'uses' => 'Admin\UserMonitoringController@index'
+    ]);
 
+    Route::get('/user-monitoring/data', [
+        'as'   => 'admin.user.monitoring.data',
+        'uses' => 'Admin\UserMonitoringController@datatable'
+    ]);
 });

@@ -49,36 +49,37 @@
                 </div>
 
                 <div class="panel-body" style="padding-top: 10px; padding-bottom: 0;">
-                    <button id="openModalBooks" class="btn btn-primary" style="margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
+                    <button id="openModalBooks" class="btn btn-primary"
+                        style="margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
                         <i class="fa fa-search"></i> Cari & Lihat Koleksi Buku
                     </button>
                 </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="books-table" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="50">ID</th>
-                                    <th>Kategori</th>
-                                    <th>Judul</th>
-                                    <th>Author</th>
-                                    <th>Publisher</th>
-                                    <th>Tahun</th>
-                                    <th>Stock</th>
-                                    <th width="100">Action</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="books-table" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="50">ID</th>
+                                <th>Kategori</th>
+                                <th>Judul</th>
+                                <th>Author</th>
+                                <th>Publisher</th>
+                                <th>Tahun</th>
+                                <th>Stock</th>
+                                <th width="100">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-
         </div>
+
+    </div>
     </div>
 
 
+    @include('modals._modals-buku')
     @include('modals.book-detail')
     @include('modals.loan-form')
-    @include('modals._modals-buku')
 @endsection
 
 

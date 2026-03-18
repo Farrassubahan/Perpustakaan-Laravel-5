@@ -25,6 +25,10 @@ class CreateUsersTable extends Migration
 
             $table->rememberToken();
 
+            $table->timestamp('last_login_at')->nullable();
+
+            $table->boolean('is_online')->default(false);
+
             $table->timestamps();
         });
     }
