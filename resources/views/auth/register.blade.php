@@ -75,7 +75,9 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="col-md-10 col-md-offset-1">
                             {!! NoCaptcha::display() !!}
+                            </div>
                         </div>
 
                         <div class="form-group" style="margin-top: 30px;">
