@@ -1,40 +1,47 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# L Farpus - Sistem Informasi Perpustakaan
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Sistem manajemen perpustakaan yang profesional dan ringkas, dibangun menggunakan **Laravel 5.3**. Proyek ini dibuat khusus sebagai sumber pembelajaran untuk mendalami arsitektur MVC (Model-View-Controller) pada framework Laravel.
 
-## About Laravel
+## 🎯 Tujuan Pembelajaran
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Proyek ini ditujukan untuk **tujuan edukasi**, dengan fokus pada:
+-   **Kemampuan Laravel 5.3**: Memahami struktur dan ketahanan Laravel versi 5.3 dalam jangka panjang.
+-   **Operasi CRUD**: Mengelola data buku, kategori, dan pengguna secara efisien.
+-   **Logika Bisnis**: Implementasi sistem perpustakaan nyata seperti pemantauan stok real-time dan pelacakan peminjaman.
+-   **Integrasi Frontend**: Menggabungkan Bootstrap 3 dan Font Awesome dengan Blade template yang dinamis untuk pengalaman pengguna yang premium.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+-   **Halaman Utama Dinamis**: Menampilkan koleksi buku terbaru secara real-time dari database.
+-   **Manajemen Buku**: Kontrol penuh atas judul, penulis, dan inventaris buku.
+-   **Sistem Peminjaman**: Pelacakan status otomatis (Tersedia vs Dipinjam).
+-   **Antarmuka Responsif**: Dashboard dan landing page modern menggunakan grid Bootstrap dan Font Awesome.
 
-## Learning Laravel
+## 🛠️ Teknologi yang Digunakan
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+-   **Backend**: PHP 7.x / Laravel 5.3
+-   **Frontend**: Blade Template Engine, Bootstrap 3, Font Awesome 4.7
+-   **Arsitektur**: Model-View-Controller (MVC)
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## 📦 Cara Instalasi
 
-## Contributing
+1.  **Instal Dependensi**:
+    ```bash
+    composer install
+    ```
+2.  **Pengaturan Environment**:
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+3.  **Konfigurasi Database**: Sesuaikan pengaturan database di file `.env`, lalu jalankan:
+    ```bash
+    php artisan migrate
+    ```
+4.  **Jalankan Aplikasi**:
+    ```bash
+    php artisan serve
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+---
+*Dibuat sebagai bagian dari perjalanan belajar untuk mendemonstrasikan praktik pemrograman yang bersih (clean code) di Laravel.*
